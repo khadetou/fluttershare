@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/widgets/build_authscreen.dart';
+import 'package:fluttershare/widgets/build_unauthscreen.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key, required this.title}) : super(key: key);
@@ -9,13 +11,10 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  bool isAuth = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: const Center(child:  Text("Hello world"),),
-    );
+    return isAuth ? const BuildAuthScreen() : const Buildunauthscreen();
   }
 }
