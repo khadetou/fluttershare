@@ -81,7 +81,11 @@ class _HomepageState extends State<Homepage> {
 
 // BOTTOM NAVIGATION BAR ACTIONS
   onTap(int pageIndex) {
-    _pageController.jumpToPage(pageIndex);
+    _pageController.animateToPage(
+      pageIndex,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
   }
 
   @override
