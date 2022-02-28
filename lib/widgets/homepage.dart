@@ -1,3 +1,4 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/build_authscreen.dart';
 import 'package:fluttershare/widgets/build_unauthscreen.dart';
@@ -12,7 +13,11 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  //Variables
   bool isAuth = false;
+  final logger = Logger(
+    printer: PrettyPrinter(),
+  );
 
   @override
   void initState() {
@@ -20,24 +25,21 @@ class _HomepageState extends State<Homepage> {
     //Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
-
-      // setState(() {
-      //   isAuth = account != null;
-      // });
     }, onError: (err) {
-      print("Error signing in: $err");
+      logger.e("Error signing in: $err");
     });
     //Reauthenticate user when app is opened
     googleSignIn.signInSilently(suppressErrors: false).then((account) {
       handleSignIn(account);
     }).catchError((err) {
-      print("Error signing in: $err");
+      logger.e("Error signing in: $err");
     });
   }
 
+//HANDLE SIGN IN
   handleSignIn(GoogleSignInAccount? account) {
     if (account != null) {
-      print("User signed in: $account");
+      logger.d("User signed in: $account");
       setState(() {
         isAuth = true;
       });
@@ -48,10 +50,12 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+//LOGIN
   login() {
     googleSignIn.signIn();
   }
 
+//LOGOUT
   logout() {
     googleSignIn.signOut();
   }
