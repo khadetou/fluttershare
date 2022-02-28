@@ -15,13 +15,18 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   //Variables
   bool isAuth = false;
-  final logger = Logger(
+  Logger logger = Logger(
     printer: PrettyPrinter(),
   );
+  late PageController _pageController;
+  int _pageIndex = 0;
 
+//Initialize state
   @override
   void initState() {
     super.initState();
+    _pageController = PageController();
+
     //Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
@@ -50,6 +55,20 @@ class _HomepageState extends State<Homepage> {
     }
   }
 
+  //Dispose controller
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
+  }
+
+//PAGE CHANGE
+  onPageChanged(int pageIndex) {
+    setState(() {
+      _pageIndex = pageIndex;
+    });
+  }
+
 //LOGIN
   login() {
     googleSignIn.signIn();
@@ -60,11 +79,20 @@ class _HomepageState extends State<Homepage> {
     googleSignIn.signOut();
   }
 
+// BOTTOM NAVIGATION BAR ACTIONS
+  onTap(int pageIndex) {
+    _pageController.jumpToPage(pageIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return isAuth
         ? BuildAuthScreen(
             logout: logout,
+            pageController: _pageController,
+            onPageChanged: onPageChanged,
+            pageIndex: _pageIndex,
+            onTap: onTap,
           )
         : Buildunauthscreen(
             login: login,
