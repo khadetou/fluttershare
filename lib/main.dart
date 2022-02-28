@@ -8,17 +8,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = ThemeData(primarySwatch: Colors.deepPurple);
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Share',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: theme.copyWith(
+        colorScheme: theme.colorScheme.copyWith(secondary: Colors.teal),
       ),
       home: const Homepage(title: "Flutter Share"),
     );
   }
 }
-
