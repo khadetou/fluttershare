@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttershare/widgets/homepage.dart';
+import 'package:fluttershare/pages/homepage.dart';
 
 void main() {
   runApp(const MyApp());

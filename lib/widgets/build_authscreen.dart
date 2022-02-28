@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttershare/widgets/activity_feed.dart';
-import 'package:fluttershare/widgets/profile.dart';
-import 'package:fluttershare/widgets/search.dart';
-import 'package:fluttershare/widgets/upload.dart';
-import './timeline.dart';
-import 'package:fluttershare/widgets/timeline.dart';
+import 'package:fluttershare/pages/activity_feed.dart';
+import 'package:fluttershare/pages/profile.dart';
+import 'package:fluttershare/pages/search.dart';
+import 'package:fluttershare/pages/timeline.dart';
+import 'package:fluttershare/pages/upload.dart';
 
 class BuildAuthScreen extends StatelessWidget {
   const BuildAuthScreen(
