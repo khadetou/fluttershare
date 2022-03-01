@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/pages/homepage.dart';
+import 'package:logger/logger.dart';
 import "./firebase_options.dart";
+
+final Logger logger = Logger(printer: PrettyPrinter());
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

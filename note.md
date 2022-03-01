@@ -95,4 +95,33 @@ body: FutureBuilder<QuerySnapshot>(
           );
         },
       ),
+
+
+
+    //CRUD
+      createUser() {
+    usersRef.doc("adagezefzefff").set({
+      "username": "James FF",
+      "postCount": 0,
+      "isAdmin": false,
+    });
+  }
+
+  updateUser() async {
+    final doc = await usersRef.doc("adagezefzefff").get();
+    if (doc.exists) {
+      doc.reference.update({
+        "username": "JeFF",
+        "postCount": 0,
+        "isAdmin": false,
+      });
+    }
+  }
+
+  deleteUser() async {
+    final doc = await usersRef.doc("adagezefzefff").get();
+    if (doc.exists) {
+      doc.reference.delete();
+    }
+  }
 ```

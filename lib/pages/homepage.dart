@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttershare/pages/create_account.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/build_authscreen.dart';
 import 'package:fluttershare/widgets/build_unauthscreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+final usersRef = FirebaseFirestore.instance.collection('users');
+final timestamp = DateTime.now();
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key, required this.title}) : super(key: key);
@@ -44,13 +49,45 @@ class _HomepageState extends State<Homepage> {
 //HANDLE SIGN IN
   handleSignIn(GoogleSignInAccount? account) {
     if (account != null) {
-      logger.d("User signed in: $account");
+      createUserInFirestore();
       setState(() {
         isAuth = true;
       });
     } else {
       setState(() {
         isAuth = false;
+      });
+    }
+  }
+
+  //CREATE USER IN FIRESTORE
+  createUserInFirestore() async {
+    //1) Check if user exists in users collection database (according to their id)
+    final GoogleSignInAccount? user = googleSignIn.currentUser;
+
+    final DocumentSnapshot<Map<String, dynamic>> doc =
+        await usersRef.doc(user!.id).get();
+
+    logger.v(doc.data());
+
+    if (!doc.exists) {
+      //2) If the user doesn't exist, then we want to take them to the create account page
+      final username = await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CreateAccount()),
+      );
+
+      logger.d(username);
+
+      //3) Get username from create account, use it to make new user document in users collection
+      usersRef.doc(user.id).set({
+        'id': user.id,
+        'username': username,
+        'photoUrl': user.photoUrl,
+        'email': user.email,
+        'displayName': user.displayName,
+        'bio': '',
+        'timestamp': timestamp,
       });
     }
   }
