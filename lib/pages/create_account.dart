@@ -17,7 +17,6 @@ class _CreateAccountState extends State<CreateAccount> {
 
   submit() {
     _formKey.currentState!.save();
-    logger.d("username: $username");
     Navigator.pop(context, username);
   }
 

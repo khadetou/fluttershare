@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttershare/models/user.dart';
 import 'package:fluttershare/pages/create_account.dart';
-import 'package:fluttershare/pages/debug_page.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/build_authscreen.dart';
@@ -25,6 +25,7 @@ class _HomepageState extends State<Homepage> {
     printer: PrettyPrinter(),
   );
   late PageController _pageController;
+  late User currentUser;
   int _pageIndex = 0;
 
 //Initialize state
@@ -66,7 +67,7 @@ class _HomepageState extends State<Homepage> {
     //1) Check if user exists in users collection database (according to their id)
     final GoogleSignInAccount? user = googleSignIn.currentUser;
 
-    final DocumentSnapshot<Map<String, dynamic>> doc =
+    DocumentSnapshot<Map<String, dynamic>> doc =
         await usersRef.doc(user!.id).get();
 
     logger.v(doc.data());
@@ -79,10 +80,8 @@ class _HomepageState extends State<Homepage> {
         MaterialPageRoute(builder: (context) => const CreateAccount()),
       );
 
-      logger.v({"User name": username});
-
       //3) Get username from create account, use it to make new user document in users collection
-      final result = usersRef.doc(user.id).set({
+      usersRef.doc(user.id).set({
         'id': user.id,
         'username': username,
         'photoUrl': user.photoUrl,
@@ -92,8 +91,12 @@ class _HomepageState extends State<Homepage> {
         'timestamp': timestamp,
       });
 
-      logger.v(result);
+      doc = await usersRef.doc(user.id).get();
     }
+
+    currentUser = User.fromDocument(doc);
+    logger.v(currentUser);
+    logger.d(currentUser.username);
   }
 
   //Dispose controller
