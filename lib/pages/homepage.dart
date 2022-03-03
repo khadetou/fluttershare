@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttershare/pages/create_account.dart';
+import 'package:fluttershare/pages/debug_page.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/build_authscreen.dart';
@@ -72,15 +73,16 @@ class _HomepageState extends State<Homepage> {
 
     if (!doc.exists) {
       //2) If the user doesn't exist, then we want to take them to the create account page
+
       final username = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const CreateAccount()),
       );
 
-      logger.d(username);
+      logger.v({"User name": username});
 
       //3) Get username from create account, use it to make new user document in users collection
-      usersRef.doc(user.id).set({
+      final result = usersRef.doc(user.id).set({
         'id': user.id,
         'username': username,
         'photoUrl': user.photoUrl,
@@ -89,6 +91,8 @@ class _HomepageState extends State<Homepage> {
         'bio': '',
         'timestamp': timestamp,
       });
+
+      logger.v(result);
     }
   }
 

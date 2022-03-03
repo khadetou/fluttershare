@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttershare/pages/debug_page.dart';
 import 'package:fluttershare/widgets/header.dart';
 import 'package:fluttershare/widgets/progress.dart';
 
@@ -14,7 +15,15 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, title: "Profile"),
-      body: linearProgress(),
+      body: ElevatedButton(
+        child: const Text('Open route'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const DebugPage()),
+          );
+        },
+      ),
     );
   }
 }

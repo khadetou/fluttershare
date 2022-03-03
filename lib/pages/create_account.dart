@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttershare/widgets/header.dart';
+import 'package:logger/logger.dart';
+
+final Logger logger = Logger(printer: PrettyPrinter());
 
 class CreateAccount extends StatefulWidget {
   const CreateAccount({Key? key}) : super(key: key);
@@ -14,7 +17,8 @@ class _CreateAccountState extends State<CreateAccount> {
 
   submit() {
     _formKey.currentState!.save();
-    Navigator.pop(context);
+    logger.d("username: $username");
+    Navigator.pop(context, username);
   }
 
   @override

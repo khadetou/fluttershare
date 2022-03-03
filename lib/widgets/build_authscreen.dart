@@ -25,12 +25,13 @@ class BuildAuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: const [
-          Timeline(),
-          ActivityFeed(),
-          Upload(),
-          Search(),
-          Profile(),
+        children: [
+          ElevatedButton(onPressed: logout, child: const Text('Logout')),
+          // Timeline(),
+          const ActivityFeed(),
+          const Upload(),
+          const Search(),
+          const Profile(),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,
