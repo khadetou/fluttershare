@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/pages/timeline.dart';
-import 'package:fluttershare/widgets/build_no_content.dart';
-import 'package:fluttershare/widgets/build_search_field.dart';
-import 'package:fluttershare/widgets/build_search_result.dart';
+import 'package:fluttershare/functions/build_no_content.dart';
+import 'package:fluttershare/functions/build_search_field.dart';
+import 'package:fluttershare/functions/build_search_result.dart';
 import 'package:logger/logger.dart';
 
 class Search extends StatefulWidget {
