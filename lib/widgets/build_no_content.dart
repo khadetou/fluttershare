@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-buildNoContent() {
+Center buildNoContent(context) {
+  final Orientation orientation = MediaQuery.of(context).orientation;
   return Center(
     child: ListView(
       shrinkWrap: true,
       children: [
         SvgPicture.asset(
           "assets/images/search.svg",
-          height: 300.0,
+          height: orientation == Orientation.portrait ? 300.0 : 200.0,
         ),
         const Text(
           "Find users",

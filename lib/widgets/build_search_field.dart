@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 
-AppBar BuildSearchField() {
+AppBar buildSearchField(
+    {dynamic handleSearch,
+    dynamic clearSearch,
+    required TextEditingController searchController}) {
   return AppBar(
     backgroundColor: Colors.white,
     title: TextFormField(
-      decoration: const InputDecoration(
+      controller: searchController,
+      decoration: InputDecoration(
         hintText: "Search for user ...",
         filled: true,
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           Icons.account_box,
           size: 28.0,
         ),
         suffixIcon: IconButton(
-          onPressed: null,
-          icon: Icon(Icons.clear),
+          onPressed: clearSearch,
+          icon: const Icon(Icons.clear),
         ),
       ),
+      onFieldSubmitted: handleSearch,
     ),
   );
 }
