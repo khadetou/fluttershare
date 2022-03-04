@@ -25,7 +25,7 @@ class _HomepageState extends State<Homepage> {
     printer: PrettyPrinter(),
   );
   late PageController _pageController;
-  late User currentUser;
+  User? currentUser;
   int _pageIndex = 0;
 
 //Initialize state
@@ -70,8 +70,6 @@ class _HomepageState extends State<Homepage> {
     DocumentSnapshot<Map<String, dynamic>> doc =
         await usersRef.doc(user!.id).get();
 
-    logger.v(doc.data());
-
     if (!doc.exists) {
       //2) If the user doesn't exist, then we want to take them to the create account page
 
@@ -96,7 +94,7 @@ class _HomepageState extends State<Homepage> {
 
     currentUser = User.fromDocument(doc);
     logger.v(currentUser);
-    logger.d(currentUser.username);
+    logger.d(currentUser!.username);
   }
 
   //Dispose controller
@@ -141,6 +139,7 @@ class _HomepageState extends State<Homepage> {
             onPageChanged: onPageChanged,
             pageIndex: _pageIndex,
             onTap: onTap,
+            currentUser: currentUser,
           )
         : Buildunauthscreen(
             login: login,

@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_splash_screen.dart';
 import 'package:fluttershare/functions/build_upload_form.dart';
+import 'package:fluttershare/models/user.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Upload extends StatefulWidget {
-  const Upload({Key? key}) : super(key: key);
+  const Upload({
+    Key? key,
+    required this.currentUser,
+  }) : super(key: key);
+  final User currentUser;
 
   @override
   State<Upload> createState() => _UploadState();
@@ -12,6 +19,7 @@ class Upload extends StatefulWidget {
 
 class _UploadState extends State<Upload> {
   XFile? _file;
+  late File file;
   handlePhoto() async {
     Navigator.pop(context);
     final ImagePicker picker = ImagePicker();
@@ -22,6 +30,7 @@ class _UploadState extends State<Upload> {
     );
     setState(() {
       _file = photo;
+      file = File(photo!.path);
     });
   }
 
@@ -31,6 +40,7 @@ class _UploadState extends State<Upload> {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _file = image;
+      file = File(image!.path);
     });
   }
 
@@ -58,10 +68,17 @@ class _UploadState extends State<Upload> {
         });
   }
 
+  clearImage() {
+    setState(() {
+      _file = null;
+      file = File(_file!.path);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return _file == null
         ? buildSplashScreen(context, selectImage)
-        : buildUploadForm();
+        : buildUploadForm(context, clearImage, file, widget.currentUser);
   }
 }

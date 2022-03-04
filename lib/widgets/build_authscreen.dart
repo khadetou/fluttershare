@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttershare/models/user.dart';
 import 'package:fluttershare/pages/activity_feed.dart';
 import 'package:fluttershare/pages/profile.dart';
 import 'package:fluttershare/pages/search.dart';
@@ -7,20 +8,23 @@ import 'package:fluttershare/pages/timeline.dart';
 import 'package:fluttershare/pages/upload.dart';
 
 class BuildAuthScreen extends StatelessWidget {
-  const BuildAuthScreen(
-      {Key? key,
-      required this.logout,
-      required this.pageController,
-      required this.onPageChanged,
-      required this.pageIndex,
-      required this.onTap})
-      : super(key: key);
+  const BuildAuthScreen({
+    Key? key,
+    required this.logout,
+    required this.pageController,
+    required this.onPageChanged,
+    required this.pageIndex,
+    required this.onTap,
+    this.currentUser,
+  }) : super(key: key);
 
   final dynamic logout;
   final PageController pageController;
   final dynamic onPageChanged;
   final dynamic onTap;
   final int pageIndex;
+  final User? currentUser;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +33,9 @@ class BuildAuthScreen extends StatelessWidget {
           ElevatedButton(onPressed: logout, child: const Text('Logout')),
           // Timeline(),
           const ActivityFeed(),
-          const Upload(),
+          Upload(
+            currentUser: currentUser!,
+          ),
           const Search(),
           const Profile(),
         ],
