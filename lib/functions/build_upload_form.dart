@@ -9,6 +9,7 @@ Scaffold buildUploadForm(
   context,
   dynamic clearImage,
   dynamic handleSubmit,
+  dynamic getUserLocation,
   File file,
   User? currentUser,
   bool isUploading,
@@ -109,7 +110,7 @@ Scaffold buildUploadForm(
                 borderRadius: BorderRadius.circular(30.0),
               ),
             ),
-            onPressed: () {},
+            onPressed: getUserLocation, //getUserLocation()
             icon: const Icon(
               Icons.my_location,
               color: Colors.white,

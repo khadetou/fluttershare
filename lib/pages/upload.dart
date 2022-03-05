@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_splash_screen.dart';
 import 'package:fluttershare/functions/build_upload_form.dart';
 import 'package:fluttershare/models/user.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import "package:image/image.dart" as image;
 import 'package:logger/logger.dart';
@@ -34,6 +36,7 @@ class _UploadState extends State<Upload> {
   late File file;
   bool isUploading = false;
   String postId = const Uuid().v4();
+  LocationPermission? permission;
 
   Logger logger = Logger(printer: PrettyPrinter());
 
@@ -149,7 +152,33 @@ class _UploadState extends State<Upload> {
     setState(() {
       _file = null;
       isUploading = false;
+      postId = const Uuid().v4();
     });
+  }
+
+  getUserLocation() async {
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.deniedForever) {
+        // Permissions are denied forever, handle appropriately.
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark placemark = placemarks[0];
+    String completeAdrress =
+        "${placemark.subThoroughfare} ${placemark.thoroughfare}, ${placemark.subLocality} ${placemark.locality}, ${placemark.subAdministrativeArea} ${placemark.administrativeArea}, ${placemark.postalCode} ${placemark.country}";
+    logger.i(completeAdrress);
+    String formattedAddress = "${placemark.locality}, ${placemark.country}";
+    locationController.text = formattedAddress;
   }
 
   @override
@@ -160,6 +189,7 @@ class _UploadState extends State<Upload> {
             context,
             clearImage,
             handleSubmit,
+            getUserLocation,
             file,
             widget.currentUser,
             isUploading,
