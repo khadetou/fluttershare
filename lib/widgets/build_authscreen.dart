@@ -34,7 +34,7 @@ class BuildAuthScreen extends StatelessWidget {
           // Timeline(),
           const ActivityFeed(),
           Upload(
-            currentUser: currentUser!,
+            currentUser: currentUser,
           ),
           const Search(),
           const Profile(),

@@ -3,12 +3,18 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/models/user.dart';
-
-import 'package:logger/logger.dart';
+import 'package:fluttershare/widgets/progress.dart';
 
 Scaffold buildUploadForm(
-    context, dynamic clearImage, File file, User currentUser) {
-  Logger logger = Logger(printer: PrettyPrinter());
+  context,
+  dynamic clearImage,
+  dynamic handleSubmit,
+  File file,
+  User? currentUser,
+  bool isUploading,
+  TextEditingController captionController,
+  TextEditingController locationController,
+) {
   return Scaffold(
     appBar: AppBar(
       backgroundColor: Colors.white70,
@@ -22,7 +28,7 @@ Scaffold buildUploadForm(
       ),
       actions: [
         TextButton(
-          onPressed: () => logger.i("pressed"),
+          onPressed: isUploading ? null : () => handleSubmit(),
           child: const Text(
             "Post",
             style: TextStyle(
@@ -36,6 +42,7 @@ Scaffold buildUploadForm(
     ),
     body: ListView(
       children: <Widget>[
+        isUploading ? linearProgress() : const Text(""),
         SizedBox(
           height: 220.0,
           width: MediaQuery.of(context).size.width * 0.8,
@@ -59,13 +66,14 @@ Scaffold buildUploadForm(
         ListTile(
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(
-              currentUser.photoUrl,
+              currentUser!.photoUrl,
             ),
           ),
-          title: const SizedBox(
+          title: SizedBox(
             width: 250.0,
             child: TextField(
-              decoration: InputDecoration(
+              controller: captionController,
+              decoration: const InputDecoration(
                 hintText: "Write a caption...",
                 border: InputBorder.none,
               ),
@@ -73,8 +81,8 @@ Scaffold buildUploadForm(
           ),
         ),
         const Divider(),
-        const ListTile(
-          leading: Icon(
+        ListTile(
+          leading: const Icon(
             Icons.pin_drop,
             color: Colors.orange,
             size: 35.0,
@@ -82,7 +90,8 @@ Scaffold buildUploadForm(
           title: SizedBox(
             width: 250.0,
             child: TextField(
-              decoration: InputDecoration(
+              controller: locationController,
+              decoration: const InputDecoration(
                 hintText: "Where was this photo taken ?",
                 border: InputBorder.none,
               ),
