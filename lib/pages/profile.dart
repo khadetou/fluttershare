@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_profile_header.dart';
 import 'package:fluttershare/widgets/header.dart';
@@ -47,7 +45,7 @@ class _ProfileState extends State<Profile> {
       child: TextButton(
         onPressed: function,
         child: Container(
-          width: 250.0,
+          width: MediaQuery.of(context).size.width * 0.63,
           height: 27.0,
           child: Text(
             text,

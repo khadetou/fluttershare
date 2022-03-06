@@ -7,6 +7,7 @@ import 'package:fluttershare/widgets/progress.dart';
 import "package:fluttershare/functions/build_display_named_field.dart";
 
 import '../models/user.dart';
+import '../widgets/build_unauthscreen.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({
@@ -23,6 +24,10 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController bioController = TextEditingController();
   bool isLoading = false;
   User? user;
+  bool _displayNameValid = true;
+  bool _bioValid = true;
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   @override
   void initState() {
@@ -39,33 +44,64 @@ class _EditProfileState extends State<EditProfile> {
     setState(() => {isLoading = false});
   }
 
+  updateProfileData() {
+    setState(() {
+      displayNameController.text.trim().length < 3 ||
+              displayNameController.text.isEmpty
+          ? _displayNameValid = false
+          : _displayNameValid = true;
+
+      bioController.text.trim().length > 100
+          ? _bioValid = false
+          : _bioValid = true;
+    });
+    if (_displayNameValid && _bioValid) {
+      usersRef.doc(widget.currentUserId).update({
+        "displayName": displayNameController.text,
+        "bio": bioController.text,
+      });
+
+      SnackBar snackBar = const SnackBar(content: Text('Profile Updated!'));
+      scaffoldMessengerKey.currentState!.showSnackBar(snackBar);
+    }
+  }
+
+  logout() async {
+    await googleSignIn.signOut();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const Homepage(title: "FlutterShare")));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: const Text(
-          "Edit Profile",
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(
-              Icons.done,
-              size: 30.0,
-              color: Colors.green,
+    return ScaffoldMessenger(
+      key: scaffoldMessengerKey,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          title: const Text(
+            "Edit Profile",
+            style: TextStyle(
+              color: Colors.black,
             ),
           ),
-        ],
-      ),
-      body: isLoading
-          ? circularProgress()
-          : ListView(children: [
-              Container(
-                child: Column(
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.done,
+                size: 30.0,
+                color: Colors.green,
+              ),
+            ),
+          ],
+        ),
+        body: isLoading
+            ? circularProgress()
+            : ListView(children: [
+                Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
@@ -80,13 +116,18 @@ class _EditProfileState extends State<EditProfile> {
                       child: Column(
                         children: [
                           buildDisplayNamedField(
-                              displayNameController: displayNameController),
-                          buildBioField(bioController: bioController),
+                            displayNameController: displayNameController,
+                            displayNameValid: _displayNameValid,
+                          ),
+                          buildBioField(
+                            bioController: bioController,
+                            bioValid: _bioValid,
+                          ),
                         ],
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () => logger.d("Update profile data"),
+                      onPressed: updateProfileData,
                       child: Text(
                         "Update Profile",
                         style: TextStyle(
@@ -101,8 +142,11 @@ class _EditProfileState extends State<EditProfile> {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextButton.icon(
-                        onPressed: () => logger.d("loguout"),
-                        icon: const Icon(Icons.cancel, color: Colors.red),
+                        onPressed: logout,
+                        icon: const Icon(
+                          Icons.cancel,
+                          color: Colors.red,
+                        ),
                         label: const Text(
                           "Logout",
                           style: TextStyle(
@@ -114,8 +158,8 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ],
                 ),
-              ),
-            ]),
+              ]),
+      ),
     );
   }
 }

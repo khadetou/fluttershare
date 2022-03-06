@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-Column buildBioField({required TextEditingController bioController}) {
+Column buildBioField(
+    {required TextEditingController bioController, required bool bioValid}) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -15,8 +16,9 @@ Column buildBioField({required TextEditingController bioController}) {
       ),
       TextField(
         controller: bioController,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           hintText: "Update Bio",
+          errorText: bioValid ? null : "Bio too long",
         ),
       ),
     ],
