@@ -39,6 +39,7 @@ class BuildAuthScreen extends StatelessWidget {
           const Search(),
           Profile(
             profileId: currentUser.id,
+            currentUser: currentUser,
           ),
         ],
         controller: pageController,

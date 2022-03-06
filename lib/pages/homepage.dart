@@ -9,6 +9,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
 final timestamp = DateTime.now();
+Logger logger = Logger(
+  printer: PrettyPrinter(),
+);
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key, required this.title}) : super(key: key);
@@ -21,9 +24,6 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   //Variables
   bool isAuth = false;
-  Logger logger = Logger(
-    printer: PrettyPrinter(),
-  );
   late PageController _pageController;
   late User currentUser;
   int _pageIndex = 0;
