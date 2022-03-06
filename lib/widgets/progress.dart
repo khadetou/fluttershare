@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-circurlarProgress() {
+circularProgress() {
   return Container(
     alignment: Alignment.center,
     padding: const EdgeInsets.only(top: 10.0),

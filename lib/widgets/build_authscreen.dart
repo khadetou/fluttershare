@@ -15,7 +15,7 @@ class BuildAuthScreen extends StatelessWidget {
     required this.onPageChanged,
     required this.pageIndex,
     required this.onTap,
-    this.currentUser,
+    required this.currentUser,
   }) : super(key: key);
 
   final dynamic logout;
@@ -23,7 +23,7 @@ class BuildAuthScreen extends StatelessWidget {
   final dynamic onPageChanged;
   final dynamic onTap;
   final int pageIndex;
-  final User? currentUser;
+  final User currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,9 @@ class BuildAuthScreen extends StatelessWidget {
             currentUser: currentUser,
           ),
           const Search(),
-          const Profile(),
+          Profile(
+            profileId: currentUser.id,
+          ),
         ],
         controller: pageController,
         onPageChanged: onPageChanged,

@@ -25,7 +25,7 @@ class _HomepageState extends State<Homepage> {
     printer: PrettyPrinter(),
   );
   late PageController _pageController;
-  User? currentUser;
+  late User currentUser;
   int _pageIndex = 0;
 
 //Initialize state
@@ -33,7 +33,14 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     _pageController = PageController();
-
+    currentUser = User(
+      displayName: "",
+      email: "",
+      photoUrl: "",
+      id: "",
+      username: "",
+      bio: "",
+    );
     //Detects when user signed in
     googleSignIn.onCurrentUserChanged.listen((account) {
       handleSignIn(account);
@@ -94,7 +101,7 @@ class _HomepageState extends State<Homepage> {
 
     currentUser = User.fromDocument(doc);
     logger.v(currentUser);
-    logger.d(currentUser!.username);
+    logger.d(currentUser.username);
   }
 
   //Dispose controller

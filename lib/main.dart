@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Share',
       debugShowCheckedModeBanner: false,
       theme: theme.copyWith(
-        colorScheme: theme.colorScheme.copyWith(secondary: Colors.teal),
+        colorScheme: theme.colorScheme.copyWith(
+          secondary: Colors.teal,
+        ),
       ),
       home: const Homepage(title: "Flutter Share"),
     );

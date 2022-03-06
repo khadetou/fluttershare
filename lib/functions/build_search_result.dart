@@ -9,7 +9,7 @@ buildSearchResult(Future<QuerySnapshot>? searchResultsFuture) {
     future: searchResultsFuture,
     builder: (context, snapshot) {
       if (!snapshot.hasData) {
-        return circurlarProgress();
+        return circularProgress();
       }
       List<UserResult> searchResults = [];
       for (var doc in snapshot.data!.docs) {
