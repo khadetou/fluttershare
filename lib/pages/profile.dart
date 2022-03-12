@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_profile_header.dart';
 import 'package:fluttershare/widgets/header.dart';
 import '../models/user.dart';
+import '../widgets/post.dart';
+import '../widgets/progress.dart';
 import 'edit_profile.dart';
+import "package:fluttershare/pages/homepage.dart";
 
 class Profile extends StatefulWidget {
   const Profile({Key? key, required this.profileId, required this.currentUser})
@@ -15,6 +19,10 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  bool isLoading = false;
+  int postCount = 0;
+  List<Post> posts = [];
+
   Column buildCountColumn(String label, int count) {
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -87,6 +95,38 @@ class _ProfileState extends State<Profile> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getProfilePosts();
+  }
+
+  getProfilePosts() async {
+    setState(() {
+      isLoading = true;
+    });
+    QuerySnapshot snapshot = await postRef
+        .doc(widget.profileId)
+        .collection('userPosts')
+        .orderBy("timestamp", descending: true)
+        .get();
+
+    setState(() {
+      isLoading = false;
+      postCount = snapshot.docs.length;
+      posts = snapshot.docs.map((doc) => Post.fromDocument(doc)).toList();
+    });
+  }
+
+  buildProfilePosts() {
+    if (isLoading) {
+      return circularProgress();
+    }
+    return Column(
+      children: posts,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: header(context, title: "Profile"),
@@ -97,7 +137,12 @@ class _ProfileState extends State<Profile> {
             profileId: widget.profileId,
             buildProfileButton: buildProfileButton,
             buildCountColumn: buildCountColumn,
-          )
+            postCount: postCount,
+          ),
+          const Divider(
+            height: 0.0,
+          ),
+          buildProfilePosts(),
         ],
       ),
     );

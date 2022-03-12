@@ -13,9 +13,7 @@ import "package:image/image.dart" as image;
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
-
-final storageRef = FirebaseStorage.instance.ref();
-final postRef = FirebaseFirestore.instance.collection('posts');
+import "package:fluttershare/pages/homepage.dart";
 
 class Upload extends StatefulWidget {
   const Upload({

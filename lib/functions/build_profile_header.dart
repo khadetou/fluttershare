@@ -5,12 +5,11 @@ import 'package:fluttershare/models/user.dart';
 import 'package:fluttershare/pages/homepage.dart';
 import 'package:fluttershare/widgets/progress.dart';
 
-buildProfileHeader(
-  BuildContext context, {
-  required String profileId,
-  dynamic buildCountColumn,
-  required dynamic buildProfileButton,
-}) {
+buildProfileHeader(BuildContext context,
+    {required String profileId,
+    dynamic buildCountColumn,
+    required dynamic buildProfileButton,
+    required int postCount}) {
   return FutureBuilder<DocumentSnapshot>(
       future: usersRef.doc(profileId).get(),
       builder: (context, snapshot) {
@@ -37,7 +36,7 @@ buildProfileHeader(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            buildCountColumn('posts', 0),
+                            buildCountColumn('posts', postCount),
                             buildCountColumn('followers', 0),
                             buildCountColumn('following', 0),
                           ],

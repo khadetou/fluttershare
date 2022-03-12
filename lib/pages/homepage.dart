@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fluttershare/models/user.dart';
 import 'package:fluttershare/pages/create_account.dart';
 import 'package:logger/logger.dart';
@@ -8,6 +9,8 @@ import 'package:fluttershare/widgets/build_unauthscreen.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final usersRef = FirebaseFirestore.instance.collection('users');
+final storageRef = FirebaseStorage.instance.ref();
+final postRef = FirebaseFirestore.instance.collection('posts');
 final timestamp = DateTime.now();
 Logger logger = Logger(
   printer: PrettyPrinter(),

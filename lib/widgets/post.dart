@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttershare/functions/post/widgets/build_post_footer.dart';
-import 'package:fluttershare/functions/post/widgets/build_post_header.dart';
-import 'package:fluttershare/functions/post/widgets/build_post_image.dart';
+
+import '../functions/post/build_post_footer.dart';
+import '../functions/post/build_post_header.dart';
+import '../functions/post/build_post_image.dart';
 
 class Post extends StatefulWidget {
   final String postId;
