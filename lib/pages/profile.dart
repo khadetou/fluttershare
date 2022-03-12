@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_profile_header.dart';
+import 'package:fluttershare/functions/profile/build_toggle_post_orientation.dart';
 import 'package:fluttershare/widgets/header.dart';
+import 'package:logger/logger.dart';
 import '../functions/profile/build_profile_posts.dart';
 import '../models/user.dart';
 import '../widgets/post.dart';
-import '../widgets/progress.dart';
 import 'edit_profile.dart';
 import "package:fluttershare/pages/homepage.dart";
 
@@ -20,6 +21,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
+  String postOrientation = "grid";
   bool isLoading = false;
   int postCount = 0;
   List<Post> posts = [];
@@ -118,6 +120,12 @@ class _ProfileState extends State<Profile> {
     });
   }
 
+  setPostOrientation(String postOrientation) {
+    setState(() {
+      this.postOrientation = postOrientation;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,12 +139,19 @@ class _ProfileState extends State<Profile> {
             buildCountColumn: buildCountColumn,
             postCount: postCount,
           ),
+          const Divider(),
+          buildTogglePostOrientation(
+            context,
+            setPostOrientation: setPostOrientation,
+            postOrientation: postOrientation,
+          ),
           const Divider(
             height: 0.0,
           ),
           buildProfilePosts(
             isLoading: isLoading,
             posts: posts,
+            postOrientation: postOrientation,
           ),
         ],
       ),
