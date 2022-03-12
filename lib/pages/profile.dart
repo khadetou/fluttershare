@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttershare/functions/build_profile_header.dart';
 import 'package:fluttershare/widgets/header.dart';
+import '../functions/profile/build_profile_posts.dart';
 import '../models/user.dart';
 import '../widgets/post.dart';
 import '../widgets/progress.dart';
@@ -117,15 +118,6 @@ class _ProfileState extends State<Profile> {
     });
   }
 
-  buildProfilePosts() {
-    if (isLoading) {
-      return circularProgress();
-    }
-    return Column(
-      children: posts,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,7 +134,10 @@ class _ProfileState extends State<Profile> {
           const Divider(
             height: 0.0,
           ),
-          buildProfilePosts(),
+          buildProfilePosts(
+            isLoading: isLoading,
+            posts: posts,
+          ),
         ],
       ),
     );

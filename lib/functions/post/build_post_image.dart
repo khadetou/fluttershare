@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttershare/main.dart';
+import "../profile/custom_image.dart";
 
 buildPostImage({required mediaUrl}) {
   return GestureDetector(
@@ -7,7 +8,7 @@ buildPostImage({required mediaUrl}) {
     child: Stack(
       alignment: Alignment.center,
       children: <Widget>[
-        Image.network(mediaUrl),
+        cachedNetworkImage(mediaUrl: mediaUrl),
       ],
     ),
   );
